@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import java.util.List;
 
 public interface ReceiveMessageCallback {
+
     Event<ReceiveMessageCallback> EVENT = EventFactory.createArrayBacked(
             ReceiveMessageCallback.class,
             (listeners) -> (text, lines) -> {

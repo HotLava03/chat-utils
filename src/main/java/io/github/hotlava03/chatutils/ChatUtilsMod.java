@@ -1,5 +1,6 @@
 package io.github.hotlava03.chatutils;
 
+import io.github.hotlava03.chatutils.events.RecieveMessageAnitSpamCallback;
 import io.github.hotlava03.chatutils.fileio.ChatStorage;
 import io.github.hotlava03.chatutils.fileio.ChatUtilsConfig;
 import io.github.hotlava03.chatutils.events.ReceiveMessageCallback;
@@ -25,7 +26,7 @@ public class ChatUtilsMod implements ModInitializer {
         var sendMessageListener = new SendMessageListener();
         ClientSendMessageEvents.CHAT.register(sendMessageListener);
         ClientSendMessageEvents.COMMAND.register(sendMessageListener);
-        ReceiveMessageCallback.EVENT.register(new AntiSpamListener());
+        RecieveMessageAnitSpamCallback.EVENT.register(new AntiSpamListener());
         ReceiveMessageCallback.EVENT.register(new ChatPersistListener());
         CopyToClipboardListener.EVENT.register(new CopyToClipboardListener());
         HudRenderCallback.EVENT.register(new HudRenderListener());
