@@ -1,3 +1,11 @@
+# WARNING - READ THIS FIRST
+
+It's getting nearly impossible to keep supporting this mod or any open source project I own. Original statement [here](https://github.com/tierrif/chat-utils/issues/50#issuecomment-2198087805).
+
+In a nutshell, I've gotten a job now and am starting a master's degree at the same time. Due to this, I'm sure you can understand that I'm unable to maintain anything currently.
+
+For those who are interested in maintaining it, I'm fully okay with forks being made. However, at this point, I'm sure you'll find mods which do the same ChatUtils does, or even better, which are maintained better than this one. However, if you like how simple and light this mod is, I guess you'll need to find a new maintainer as of now until I'm less busy. Thanks a lot for all support given to this mod throughout the past few years.
+
 # ChatUtils - Copy messages with a click + anti spam
 
 [Get it on Modrinth](https://modrinth.com/mod/chatutils)
