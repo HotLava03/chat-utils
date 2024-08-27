@@ -1,8 +1,9 @@
 package io.github.hotlava03.chatutils.listeners;
 
-import io.github.hotlava03.chatutils.events.ReceiveMessageCallback;
+import io.github.hotlava03.chatutils.events.RecieveMessageAnitSpamCallback;
 import io.github.hotlava03.chatutils.fileio.ChatStorage;
 import io.github.hotlava03.chatutils.fileio.ChatUtilsConfig;
+import io.github.hotlava03.chatutils.util.AntiSpamReturn;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minecraft.client.MinecraftClient;
@@ -16,19 +17,22 @@ import java.util.List;
 
 import static io.github.hotlava03.chatutils.util.OrderedTextAdapter.*;
 
-public class AntiSpamListener implements ReceiveMessageCallback {
+public class AntiSpamListener implements RecieveMessageAnitSpamCallback {
     private static final String ANTISPAM_REGEX = ".+(§8)? ?\\[(§c)?x(\\d+)(§8)?]$";
 
     @Override
-    public void accept(Text text, List<ChatHudLine.Visible> lines) {
-        if (!ChatUtilsConfig.ANTI_SPAM.value()) return;
-        if (ChatStorage.getInstance().isBlockingChatEvents()) return;
+    public AntiSpamReturn accept(Text text, List<ChatHudLine.Visible> lines) {
+
+        AntiSpamReturn returnValue = new AntiSpamReturn();
+
+        if (!ChatUtilsConfig.ANTI_SPAM.value()) return returnValue;
+        if (ChatStorage.getInstance().isBlockingChatEvents()) return returnValue;
 
         var client = MinecraftClient.getInstance();
         var chat = client.inGameHud.getChatHud();
         var range = ChatUtilsConfig.ANTI_SPAM_RANGE.value();
         var history = lines.size() >= range ? lines.subList(0, range) : lines;
-        if (history.isEmpty()) return;
+        if (history.isEmpty()) return returnValue;
 
         var maxTextLength = MathHelper.floor(chat.getWidth() / chat.getChatScale());
         var splitLines = ChatMessages.breakRenderedChatMessageLines(
@@ -91,7 +95,16 @@ public class AntiSpamListener implements ReceiveMessageCallback {
             lineMatchCount = 0;
         }
 
-        if (spamCounter > 1) ((MutableText) text).append(" §8[§cx" + spamCounter + "§8]");
+        if (spamCounter > 1) {
+            MutableText newText = Text.empty();
+            newText.append(text);
+            newText.append(" §8[§cx" + spamCounter + "§8]");
+            newText.setStyle(text.getStyle());
+            returnValue.setIsSpam(true);
+            returnValue.setMessage(newText);
+
+        }
+        return returnValue;
     }
 
     private boolean hasAntispamIndicator(String message) {
